@@ -1,0 +1,24 @@
+plugins {
+    id 'groovy'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.javalin:javalin:6.7.0'
+    implementation 'com.graphql-java:graphql-java:24.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.1'
+    implementation 'org.slf4j:slf4j-simple:2.0.16'
+
+    testImplementation 'org.codehaus.groovy:groovy:3.0.19'
+    testImplementation 'org.spockframework:spock-core:2.2-groovy-3.0'
+    testImplementation 'junit:junit:4.13.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
