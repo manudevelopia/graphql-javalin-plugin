@@ -12,6 +12,8 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeRuntimeWiring;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.nio.file.Files;
 import java.util.Map;
 
 class GraphQLService {
+    private final Logger LOG = LoggerFactory.getLogger(GraphQLService.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final GraphQL graphQL;
 
