@@ -1,13 +1,16 @@
 package info.developia;
 
+import graphql.schema.DataFetcher;
 import io.javalin.config.JavalinConfig;
 import io.javalin.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Map;
 import java.util.function.Consumer;
 
 class GraphQLPlugin extends Plugin<GraphQLPlugin.Config> {
@@ -28,6 +31,7 @@ class GraphQLPlugin extends Plugin<GraphQLPlugin.Config> {
         public boolean playground = true;
         public String playgroundPath = "/playground";
         public String playgroundHtmlFilename = "playground/index.html";
+        public Map<String, DataFetcher> queries;
     }
 
     @Override
