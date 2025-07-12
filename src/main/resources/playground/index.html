@@ -14,6 +14,9 @@
   window.addEventListener('load', function () {
     GraphQLPlayground.init(document.getElementById('root'), {
       endpoint: '{{PATH}}',
+      settings: {
+        'schema.polling.enable': false,
+      },
     });
   });
 </script>
