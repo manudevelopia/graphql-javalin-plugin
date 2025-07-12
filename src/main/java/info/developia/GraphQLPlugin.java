@@ -3,7 +3,6 @@ package info.developia;
 import graphql.schema.DataFetcher;
 import io.javalin.config.JavalinConfig;
 import io.javalin.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,10 +37,14 @@ class GraphQLPlugin extends Plugin<GraphQLPlugin.Config> {
     public void onInitialize(JavalinConfig config) {
         config.router.mount(router -> router.post(pluginConfig.path, graphQLService::handleRequest));
         if (pluginConfig.playground)
-            config.router.mount(router -> router.get(pluginConfig.playgroundPath, ctx -> {
-                ctx.result(getPlaygroundHtml(pluginConfig));
-                ctx.contentType("text/html");
-            }));
+            config.router.mount(router -> {
+                        router.get("/", ctx -> ctx.redirect(pluginConfig.playgroundPath));
+                        router.get(pluginConfig.playgroundPath, ctx -> {
+                            ctx.result(getPlaygroundHtml(pluginConfig));
+                            ctx.contentType("text/html");
+                        });
+                    }
+            );
     }
 
     private static String getPlaygroundHtml(Config pluginConfig) throws IOException {
