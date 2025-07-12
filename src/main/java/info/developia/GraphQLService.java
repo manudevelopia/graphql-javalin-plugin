@@ -1,8 +1,5 @@
 package info.developia;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.ExecutionInput;
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -21,7 +18,6 @@ import java.util.Map;
 
 class GraphQLService {
     private final Logger LOG = LoggerFactory.getLogger(GraphQLService.class);
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final GraphQL graphQL;
 
     public GraphQLService(GraphQLPlugin.Config pluginConfig) {
@@ -45,7 +41,7 @@ class GraphQLService {
     }
 
     void handleRequest(Context ctx) {
-        var request = parse(ctx.body());
+        Map<String, Object> request = ctx.bodyStreamAsClass(Map.class);
         var query = (String) request.get("query");
         var operationName = (String) request.get("operationName");
         var variables = (Map<String, Object>) request.getOrDefault("variables", Map.of());
@@ -55,14 +51,5 @@ class GraphQLService {
                 .variables(variables)
                 .build());
         ctx.json(result.toSpecification());
-    }
-
-    private Map<String, Object> parse(String json) {
-        try {
-            return objectMapper.readValue(json, new TypeReference<>() {
-            });
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
