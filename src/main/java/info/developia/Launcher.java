@@ -20,15 +20,19 @@ public class Launcher {
     }
 
     private void start() {
+        var graphQLOptions = new GraphQLOptions()
+                .addPackage("io.javalin.examples")
+                .registerQuery("hello", sayHello);
         var server = Javalin.create(config -> {
             config.useVirtualThreads = true;
-            config.registerPlugin(new GraphQLPlugin(graphQl -> {
-                graphQl.path = "/graph";
-                graphQl.queries = Map.of(
-                        "hello", sayHello,
-                        "bye", sayBye
-                );
-            }));
+//            config.registerPlugin(new GraphQLPlugin(graphQl -> {
+//                graphQl.path = "/graph";
+//                graphQl.queries = Map.of(
+//                        "hello", sayHello,
+//                        "bye", sayBye
+//                );
+//            }));
+            config.registerPlugin(new GraphQLPlugin(graphQLOptions));
         });
         server.start(7000);
     }

@@ -24,6 +24,17 @@ class GraphQLPlugin extends Plugin<GraphQLPlugin.Config> {
         super(graphQlPluginConfig, new Config());
     }
 
+    public GraphQLPlugin(GraphQLOptions graphQLOptions) {
+        super(pluginConfig -> {
+            pluginConfig.path = graphQLOptions.path;
+            pluginConfig.schema = graphQLOptions.schema;
+            pluginConfig.playground = graphQLOptions.playground;
+            pluginConfig.playgroundPath = graphQLOptions.playgroundPath;
+            pluginConfig.playgroundHtmlFilename = graphQLOptions.playgroundHtmlFilename;
+            pluginConfig.queries = graphQLOptions.queries;
+        }, new Config());
+    }
+
     public static class Config {
         public String path = "/graphql";
         public String schema = "schema.graphqls";
