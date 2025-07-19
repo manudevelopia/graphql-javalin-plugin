@@ -3,16 +3,7 @@ package info.developia;
 import graphql.schema.DataFetcher;
 import io.javalin.Javalin;
 
-import java.util.Map;
-
 public class Launcher {
-
-//        var graphQLOption = GraphQLOptions("/graphql", ContextExample())
-//                .addPackage("io.javalin.examples")
-//                .register(QueryExample(message))
-//                .register(MutationExample(message))
-//                .register(SubscriptionExample())
-//                .context()
 
     public static void main(String[] args) {
         var launcher = new Launcher();
@@ -20,18 +11,12 @@ public class Launcher {
     }
 
     private void start() {
-        var graphQLOptions = new GraphQLOptions()
+        var graphQLOptions = GraphQLOptions.builder()
                 .addPackage("io.javalin.examples")
-                .registerQuery("hello", sayHello);
+                .registerQuery("hello", sayHello)
+                .registerQuery("bye", sayBye).build();
         var server = Javalin.create(config -> {
             config.useVirtualThreads = true;
-//            config.registerPlugin(new GraphQLPlugin(graphQl -> {
-//                graphQl.path = "/graph";
-//                graphQl.queries = Map.of(
-//                        "hello", sayHello,
-//                        "bye", sayBye
-//                );
-//            }));
             config.registerPlugin(new GraphQLPlugin(graphQLOptions));
         });
         server.start(7000);

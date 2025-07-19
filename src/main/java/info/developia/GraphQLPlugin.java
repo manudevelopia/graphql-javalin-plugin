@@ -1,6 +1,5 @@
 package info.developia;
 
-import graphql.schema.DataFetcher;
 import io.javalin.config.JavalinConfig;
 import io.javalin.plugin.Plugin;
 import org.slf4j.Logger;
@@ -9,58 +8,34 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Map;
-import java.util.function.Consumer;
 
-class GraphQLPlugin extends Plugin<GraphQLPlugin.Config> {
+class GraphQLPlugin extends Plugin<Void> {
     private final Logger LOG = LoggerFactory.getLogger(GraphQLPlugin.class);
-    private final GraphQLService graphQLService = new GraphQLService(pluginConfig);
-
-    public GraphQLPlugin() {
-        super(null, new Config());
-    }
-
-    public GraphQLPlugin(Consumer<Config> graphQlPluginConfig) {
-        super(graphQlPluginConfig, new Config());
-    }
+    private final GraphQLService graphQLService;
+    private final GraphQLOptions graphQLOptions;
 
     public GraphQLPlugin(GraphQLOptions graphQLOptions) {
-        super(pluginConfig -> {
-            pluginConfig.path = graphQLOptions.path;
-            pluginConfig.schema = graphQLOptions.schema;
-            pluginConfig.playground = graphQLOptions.playground;
-            pluginConfig.playgroundPath = graphQLOptions.playgroundPath;
-            pluginConfig.playgroundHtmlFilename = graphQLOptions.playgroundHtmlFilename;
-            pluginConfig.queries = graphQLOptions.queries;
-        }, new Config());
-    }
-
-    public static class Config {
-        public String path = "/graphql";
-        public String schema = "schema.graphqls";
-        public boolean playground = true;
-        public String playgroundPath = "/playground";
-        public String playgroundHtmlFilename = "playground/index.html";
-        public Map<String, DataFetcher> queries;
+        this.graphQLOptions = graphQLOptions;
+        this.graphQLService = new GraphQLService(graphQLOptions);
     }
 
     @Override
     public void onInitialize(JavalinConfig config) {
-        config.router.mount(router -> router.post(pluginConfig.path, graphQLService::handleRequest));
-        if (pluginConfig.playground)
+        config.router.mount(router -> router.post(graphQLOptions.path(), graphQLService::handleRequest));
+        if (graphQLOptions.playground())
             config.router.mount(router -> {
-                        router.get("/", ctx -> ctx.redirect(pluginConfig.playgroundPath));
-                        router.get(pluginConfig.playgroundPath, ctx -> {
-                            ctx.result(getPlaygroundHtml(pluginConfig));
+                        router.get("/", ctx -> ctx.redirect(graphQLOptions.playgroundPath()));
+                        router.get(graphQLOptions.playgroundPath(), ctx -> {
+                            ctx.result(getPlaygroundHtml());
                             ctx.contentType("text/html");
                         });
                     }
             );
     }
 
-    private static String getPlaygroundHtml(Config pluginConfig) throws IOException {
-        var playgroundHtmlFilename = "src/main/resources/" + pluginConfig.playgroundHtmlFilename;
+    private String getPlaygroundHtml() throws IOException {
+        var playgroundHtmlFilename = "src/main/resources/" + graphQLOptions.playgroundHtmlFilename();
         var html = Files.readString(new File(playgroundHtmlFilename).toPath());
-        return html.replace("{{PATH}}", pluginConfig.path);
+        return html.replace("{{PATH}}", graphQLOptions.path());
     }
 }

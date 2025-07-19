@@ -20,14 +20,14 @@ class GraphQLService {
     private final Logger LOG = LoggerFactory.getLogger(GraphQLService.class);
     private final GraphQL graphQL;
 
-    public GraphQLService(GraphQLPlugin.Config pluginConfig) {
-        graphQL = startGraphQL(pluginConfig);
+    public GraphQLService(GraphQLOptions graphQLOptions) {
+        graphQL = startGraphQL(graphQLOptions);
     }
 
-    private GraphQL startGraphQL(GraphQLPlugin.Config pluginConfig) {
+    private GraphQL startGraphQL(GraphQLOptions graphQLOptions) {
         try {
-            var schema = Files.readString(new File("src/main/resources/" + pluginConfig.schema).toPath());
-            var wiring = getRuntimeWiring(pluginConfig.queries);
+            var schema = Files.readString(new File("src/main/resources/" + graphQLOptions.schema()).toPath());
+            var wiring = getRuntimeWiring(graphQLOptions.queries());
             return GraphQL.newGraphQL(new SchemaGenerator().makeExecutableSchema(new SchemaParser().parse(schema), wiring)).build();
         } catch (IOException e) {
             throw new RuntimeException(e);
