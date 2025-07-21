@@ -11,10 +11,9 @@ import io.javalin.http.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Map;
+
+import static info.developia.Tools.readResourceFile;
 
 class GraphQLService {
     private final Logger LOG = LoggerFactory.getLogger(GraphQLService.class);
@@ -25,13 +24,9 @@ class GraphQLService {
     }
 
     private GraphQL startGraphQL(GraphQLOptions graphQLOptions) {
-        try {
-            var schema = Files.readString(new File("src/main/resources/" + graphQLOptions.schema()).toPath());
-            var wiring = getRuntimeWiring(graphQLOptions.queries());
-            return GraphQL.newGraphQL(new SchemaGenerator().makeExecutableSchema(new SchemaParser().parse(schema), wiring)).build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        var schema = readResourceFile(graphQLOptions.schema());
+        var wiring = getRuntimeWiring(graphQLOptions.queries());
+        return GraphQL.newGraphQL(new SchemaGenerator().makeExecutableSchema(new SchemaParser().parse(schema), wiring)).build();
     }
 
     private RuntimeWiring getRuntimeWiring(Map<String, DataFetcher> queries) {

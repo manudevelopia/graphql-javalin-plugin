@@ -5,9 +5,9 @@ import io.javalin.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+
+import static info.developia.Tools.readResourceFile;
 
 class GraphQLPlugin extends Plugin<Void> {
     private final Logger LOG = LoggerFactory.getLogger(GraphQLPlugin.class);
@@ -34,8 +34,7 @@ class GraphQLPlugin extends Plugin<Void> {
     }
 
     private String getPlaygroundHtml() throws IOException {
-        var playgroundHtmlFilename = "src/main/resources/" + graphQLOptions.playgroundHtmlFilename();
-        var html = Files.readString(new File(playgroundHtmlFilename).toPath());
-        return html.replace("{{PATH}}", graphQLOptions.path());
+        return readResourceFile(graphQLOptions.playgroundHtmlFilename())
+                .replace("{{PATH}}", graphQLOptions.path());
     }
 }
