@@ -5,8 +5,6 @@ import io.javalin.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 import static info.developia.Tools.readResourceFile;
 
 class GraphQLPlugin extends Plugin<Void> {
@@ -33,7 +31,7 @@ class GraphQLPlugin extends Plugin<Void> {
             );
     }
 
-    private String getPlaygroundHtml() throws IOException {
+    private String getPlaygroundHtml() {
         return readResourceFile(graphQLOptions.playgroundHtmlFilename())
                 .replace("{{PATH}}", graphQLOptions.path());
     }
