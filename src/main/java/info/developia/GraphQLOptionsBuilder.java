@@ -14,6 +14,26 @@ public class GraphQLOptionsBuilder {
     public Map<String, DataFetcher> queries;
     private String packageName;
 
+    public GraphQLOptionsBuilder schema(String schema) {
+        this.schema = schema;
+        return this;
+    }
+
+    public GraphQLOptionsBuilder playground(boolean playground) {
+        this.playground = playground;
+        return this;
+    }
+
+    public GraphQLOptionsBuilder playgroundPath(String playgroundPath) {
+        this.playgroundPath = playgroundPath;
+        return this;
+    }
+
+    public GraphQLOptionsBuilder playgroundHtmlFilename(String playgroundHtmlFilename) {
+        this.playgroundHtmlFilename = playgroundHtmlFilename;
+        return this;
+    }
+
     public GraphQLOptionsBuilder addPackage(String packageName) {
         this.packageName = packageName;
         return this;
