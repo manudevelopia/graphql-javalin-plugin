@@ -4,7 +4,7 @@ import graphql.schema.DataFetcher;
 
 import java.util.Map;
 
-record GraphQLOptions(
+public record GraphQLOptions(
         String path,
         String schema,
         boolean playground,
