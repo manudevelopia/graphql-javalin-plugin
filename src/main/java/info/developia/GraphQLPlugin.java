@@ -25,7 +25,7 @@ class GraphQLPlugin extends Plugin<Void> {
                         router.get("/", ctx -> ctx.redirect(graphQLOptions.playgroundPath()));
                         router.get(graphQLOptions.playgroundPath(), ctx -> {
                             ctx.result(getPlaygroundHtml());
-                            ctx.contentType("text/html");
+                            ctx.contentType(ContentType.TEXT_HTML);
                         });
                     }
             );
