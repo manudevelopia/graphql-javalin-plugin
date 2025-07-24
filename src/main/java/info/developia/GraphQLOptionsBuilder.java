@@ -11,8 +11,8 @@ public class GraphQLOptionsBuilder {
     public boolean playground = true;
     public String playgroundPath = "/playground";
     public String playgroundHtmlFilename = "playground/index.html";
-    public Map<String, DataFetcher> queries;
-    public Map<String, DataFetcher> mutations;
+    public Map<String, DataFetcher> queries = new HashMap<>();
+    public Map<String, DataFetcher> mutations = new HashMap<>();
     private String packageName;
 
     public GraphQLOptionsBuilder schema(String schema) {
@@ -41,17 +41,11 @@ public class GraphQLOptionsBuilder {
     }
 
     public GraphQLOptionsBuilder registerQuery(String queryName, DataFetcher<String> dataFetcher) {
-        if (queries == null) {
-            queries = new HashMap<>();
-        }
         queries.put(queryName, dataFetcher);
         return this;
     }
 
     public GraphQLOptionsBuilder registerMutation(String queryName, DataFetcher<String> dataFetcher) {
-        if (mutations == null) {
-            mutations = new HashMap<>();
-        }
         mutations.put(queryName, dataFetcher);
         return this;
     }
