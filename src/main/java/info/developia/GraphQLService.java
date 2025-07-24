@@ -2,7 +2,6 @@ package info.developia;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
-import graphql.schema.DataFetcher;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
@@ -25,13 +24,14 @@ class GraphQLService {
 
     private GraphQL startGraphQL(GraphQLOptions graphQLOptions) {
         var schema = readResourceFile(graphQLOptions.schema());
-        var wiring = getRuntimeWiring(graphQLOptions.queries());
+        var wiring = getRuntimeWiring(graphQLOptions);
         return GraphQL.newGraphQL(new SchemaGenerator().makeExecutableSchema(new SchemaParser().parse(schema), wiring)).build();
     }
 
-    private RuntimeWiring getRuntimeWiring(Map<String, DataFetcher> queries) {
+    private RuntimeWiring getRuntimeWiring(GraphQLOptions graphQLOptions) {
         return RuntimeWiring.newRuntimeWiring()
-                .type(TypeRuntimeWiring.newTypeWiring("Query").dataFetchers(queries))
+                .type(TypeRuntimeWiring.newTypeWiring("Query").dataFetchers(graphQLOptions.queries()))
+                .type(TypeRuntimeWiring.newTypeWiring("Mutation").dataFetchers(graphQLOptions.mutations()))
                 .build();
     }
 

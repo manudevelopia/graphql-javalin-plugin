@@ -1,6 +1,7 @@
 package info.developia;
 
 import io.javalin.config.JavalinConfig;
+import io.javalin.http.ContentType;
 import io.javalin.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

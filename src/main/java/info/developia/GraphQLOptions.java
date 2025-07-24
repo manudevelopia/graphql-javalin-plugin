@@ -11,6 +11,7 @@ public record GraphQLOptions(
         String playgroundPath,
         String playgroundHtmlFilename,
         Map<String, DataFetcher> queries,
+        Map<String, DataFetcher> mutations,
         String packageName
 ) {
     public static GraphQLOptionsBuilder builder() {
