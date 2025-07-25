@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import static info.developia.Tools.readResourceFile;
 
-class GraphQLPlugin extends Plugin<Void> {
+public class GraphQLPlugin extends Plugin<Void> {
     private final Logger LOG = LoggerFactory.getLogger(GraphQLPlugin.class);
     private final GraphQLService graphQLService;
     private final GraphQLOptions graphQLOptions;
