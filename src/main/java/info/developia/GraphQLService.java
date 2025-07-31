@@ -23,12 +23,14 @@ class GraphQLService {
     }
 
     private GraphQL startGraphQL(GraphQLOptions graphQLOptions) {
+        LOG.debug("Starting GraphQL service");
         var schema = readResourceFile(graphQLOptions.schema());
         var wiring = getRuntimeWiring(graphQLOptions);
         return GraphQL.newGraphQL(new SchemaGenerator().makeExecutableSchema(new SchemaParser().parse(schema), wiring)).build();
     }
 
     private RuntimeWiring getRuntimeWiring(GraphQLOptions graphQLOptions) {
+        LOG.debug("Wiring {} Queries and {} Mutations to GraphQL service", graphQLOptions.queries().size(), graphQLOptions.mutations().size());
         return RuntimeWiring.newRuntimeWiring()
                 .type(TypeRuntimeWiring.newTypeWiring("Query").dataFetchers(graphQLOptions.queries()))
                 .type(TypeRuntimeWiring.newTypeWiring("Mutation").dataFetchers(graphQLOptions.mutations()))
