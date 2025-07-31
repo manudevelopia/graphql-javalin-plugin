@@ -3,13 +3,10 @@ package info.developia;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.ContentType;
 import io.javalin.plugin.Plugin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static info.developia.Tools.readResourceFile;
 
 class GraphQLPlugin extends Plugin<Void> {
-    private final Logger LOG = LoggerFactory.getLogger(GraphQLPlugin.class);
     private final GraphQLService graphQLService;
     private final GraphQLOptions graphQLOptions;
 
