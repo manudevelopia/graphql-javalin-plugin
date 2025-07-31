@@ -6,7 +6,7 @@ import io.javalin.plugin.Plugin;
 
 import static info.developia.Tools.readResourceFile;
 
-class GraphQLPlugin extends Plugin<Void> {
+public class GraphQLPlugin extends Plugin<Void> {
     private final GraphQLService graphQLService;
     private final GraphQLOptions graphQLOptions;
 
